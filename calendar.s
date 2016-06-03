@@ -38,9 +38,9 @@ _start:
 	bl	_int_divide		@ 0 based start square returned in r1 (modulus)
 
 	@ Print spaces for the leading blank squares
-	ldr	r0, =blank_square
 	mov	r2, #0				
 _blank_days:
+	ldr	r0, =blank_square
 	cmp	r2, r1
 	bge	_start_calendar_day
 	bl	_print_string
@@ -58,6 +58,7 @@ _start_calendar_day:
 	add	r2, r2, #1		@ Calendar days start with a '1'
 
 	mov	r3, #0
+	mov	r5, r1			@ Save start box
 _next_calendar_day:
 	add	r3, r3, #1
 	ldr	r0, =single_space
@@ -74,7 +75,7 @@ _next_calendar_day:
 	bl	_print_string
 
 	mov	r1, #7			@ Wrap numbers at 7 boxes
-	mov	r0, r3
+	add	r0, r3, r5
 	bl	_int_divide
 	ldr	r0, =newline
 	teq	r1, #0
